@@ -1,3 +1,4 @@
+// https://github.com/atomicobject/elegant-form-validation-react/blob/master/src/Validation
 import moment from 'moment';
 // // Object.keys polyfill
 // if (!Object.keys) {
@@ -41,6 +42,13 @@ export const zip = (param) => (f, text) => f ? zipFormater(text, param) : [zipPa
 // execution
 export const rule = (field, name, ...args) => {
   return {
+    r: (state) => {
+      return {
+        field,
+        name,
+        args
+      };
+    },
     v0: (state) => {
       for (let v of args) {
         let value = state[field], x = v(0, value, state), newValue = v(1, x[0][0], state);
@@ -77,7 +85,8 @@ export const ruleIf = (condition, ...rules) => {
     r: rules
   }
 };
-export const valuedate = (state, rules) => rules.reduce((y, x) => Object.assign(y, x.c ? (x.c(state) && x.r ? validate(state, x.r) : y) : x.v0(state)), {});
+export const flatten = (state, rules) => rules.reduce((y, x) => { y.push.apply(y, x.c ? (x.c(state) && x.r ? flatten(state, x.r) : []) : [x.r(state)]); return y; }, []);
+export const valuedate = (state, rules) => rules.reduce((y, x) => Object.assign(y, x.c ? (x.c(state) && x.r ? valuedate(state, x.r) : y) : x.v0(state)), {});
 export const validate = (state, rules) => rules.reduce((y, x) => Object.assign(y, x.c ? (x.c(state) && x.r ? validate(state, x.r) : y) : x.v1(state)), {});
 export const format = (state, rules) => rules.reduce((y, x) => Object.assign(y, x.c ? (x.c(state) && x.r ? format(state, x.r) : y) : x.f(state)), {});
 
@@ -89,8 +98,36 @@ export let hasErrors = function ($this, rules, stateProp) {
   return Object.keys(errors).length !== 1;
 };
 
+export let hadErrors = function ($this, stateProp) {
+  let errors = $this.state.errors || null;
+  return errors ? Object.keys(errors).length !== 1 : false;
+};
+
+export let hadShownErrors = function ($this, stateProp) {
+  let errors = $this.state.errors ? $this.state.errors._showErrors || null : null;
+  return errors ? Object.keys(errors).length !== 1 : false;
+};
+
 export let errorFor = function ($this, field) {
   return $this.state.errors && $this.state.errors._showErrors ? $this.state.errors[field || ''] || '' : '';
+};
+
+export let getRules = function ($this, rules, stateProp) {
+  let state = stateProp ? $this.state[stateProp] : $this.state;
+  return rules ? flatten(state, rules) : [];
+};
+
+export let setState = function ($this, rules, stateProp) {
+  let state = stateProp ? $this.state[stateProp] : $this.state;
+  let effectiveRules = getRules($this, rules, stateProp);
+  let fieldMap = effectiveRules.reduce((y, x) => Object.assign(y, { [x.field]: true }), {});
+  Object.keys(state).forEach(function (key) {
+    if (!fieldMap[key]) {
+      state[key] = undefined;
+      // delete state[key];
+    }
+  });
+  return $this.state;
 };
 
 export let setErrors = function ($this, rules, stateProp) {
@@ -129,7 +166,7 @@ export let setFormats = function ($this, rules, stateProp) {
 // };
 
 export default {
-  hasErrors, errorFor, setErrors, setValues, setFormats
+  hasErrors, hadErrors, hadShownErrors, errorFor, getRules, setState, setErrors, setValues, setFormats
 };
 
 
