@@ -1,6 +1,6 @@
 {
   "name": "react-core-validation",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "React core validation",
   "main": "lib/index.js",
   "keywords": [
@@ -29,7 +29,7 @@
   "author": "Sky Morey <smorey@degdigital.com>",
   "license": "MIT",
   "dependencies": {
-    "core-validation": "0.0.2"
+    "core-validation": "0.0.3"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
@@ -51,7 +51,7 @@
     "eslint-plugin-jsx-a11y": "2.2.3",
     "eslint-plugin-react": "6.4.1",
     "jest": "^16.0.2",
-    "npm-run-all": "^4.0.1",
+    "npm-run-all": "^4.1.2",
     "power-assert": "^1.4.1",
     "react": "^15.3.0"
   },
