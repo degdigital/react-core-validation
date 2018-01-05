@@ -29,7 +29,7 @@
   "author": "Sky Morey <smorey@degdigital.com>",
   "license": "MIT",
   "dependencies": {
-    "moment": "^2.18.1"
+    "core-validation": "0.0.2"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
