@@ -1,6 +1,6 @@
 {
   "name": "react-core-validation",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "React core validation",
   "main": "lib/index.js",
   "keywords": [
@@ -29,7 +29,7 @@
   "author": "Sky Morey <smorey@degdigital.com>",
   "license": "MIT",
   "dependencies": {
-    "core-validation": "0.0.3"
+    "core-validation": "0.0.4"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
