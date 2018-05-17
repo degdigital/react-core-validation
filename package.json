@@ -53,7 +53,7 @@
     "jest": "^16.0.2",
     "npm-run-all": "^4.1.2",
     "power-assert": "^1.4.1",
-    "react": "^15.3.0"
+    "react": "^16.3.2"
   },
   "jest": {
     "testRegex": "(/test/.*|\\.(test|spec))\\.js$",
